@@ -9,6 +9,7 @@ import store from '@/store'
 import '@/mock/mockServe'
 import 'swiper/css/swiper.css'
 
+
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
 
