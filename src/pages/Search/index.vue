@@ -117,6 +117,7 @@ import {mapGetters} from 'vuex'
 import SearchSelector from './SearchSelector/SearchSelector'
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Search',
   data() {
     return {
@@ -136,6 +137,9 @@ export default {
   },
   components: {
     SearchSelector
+  },
+  beforeMount() {
+    Object.assign(this.searchParams,this.$route.params,this.$route.query)
   },
   mounted() {
     this.getData()
