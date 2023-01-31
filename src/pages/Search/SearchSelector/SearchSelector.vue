@@ -85,7 +85,6 @@ export default {
   name: 'SearchSelector',
   computed:{
     ...mapGetters(['trademarkList','attrsList'])
-
   },
 }
 </script>
