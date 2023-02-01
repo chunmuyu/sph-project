@@ -3,7 +3,6 @@
 import requests from './request'
 import mockRequests from './mockAjax'
 
-
 export const reqCategoryList = ()=>{
     return requests({url:'/product/getBaseCategoryList',method:'get'})
 }
@@ -21,4 +20,10 @@ export const reqGetSearchInfo = (params)=>requests({
     url:"/list",
     method:"post",
     data:params
+})
+
+
+export const reqGoodsInfo = (skuId)=>requests({
+    url:`/item/${skuId}`,
+    method:'get'
 })
