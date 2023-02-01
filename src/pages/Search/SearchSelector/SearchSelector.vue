@@ -4,20 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
-          <li><img src="./images/phone06.png"/></li>
-          <li><img src="./images/phone07.png"/></li>
-          <li><img src="./images/phone08.png"/></li>
-          <li><img src="./images/phone09.png"/></li>
-          <li><img src="./images/phone10.png"/></li>
-          <li><img src="./images/phone11.png"/></li>
-          <li><img src="./images/phone12.png"/></li>
-          <li><img src="./images/phone12.png"/></li>
-          <li><img src="./images/phone14.png"/></li>
-          <li><img src="./images/phone01.png"/></li>
-          <li><img src="./images/phone06.png"/></li>
-          <li><img src="./images/phone07.png"/></li>
-          <li><img src="./images/phone02.png"/></li>
+          <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="tradeMarkHandler(trademark)">{{trademark.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -25,49 +12,11 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <div class="type-wrap">
-      <div class="fl key">网络制式</div>
-      <div class="fl value">
-        <ul class="type-list">
-          <li>
-            <a>GSM（移动/联通2G）</a>
-          </li>
-          <li>
-            <a>电信2G</a>
-          </li>
-          <li>
-            <a>电信3G</a>
-          </li>
-          <li>
-            <a>移动3G</a>
-          </li>
-          <li>
-            <a>联通3G</a>
-          </li>
-          <li>
-            <a>联通4G</a>
-          </li>
-          <li>
-            <a>电信3G</a>
-          </li>
-          <li>
-            <a>移动3G</a>
-          </li>
-          <li>
-            <a>联通3G</a>
-          </li>
-          <li>
-            <a>联通4G</a>
-          </li>
-        </ul>
-      </div>
-      <div class="fl ext"></div>
-    </div>
     <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
       <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue,index) in attrsList.attrValueList" :key="index">
+          <li v-for="(attrValue,index) in attr.attrValueList" :key="index" @click="attrInfo(attr,attrValue)">
             <a>{{ attrValue }}</a>
           </li>
         </ul>
@@ -85,6 +34,14 @@ export default {
   name: 'SearchSelector',
   computed:{
     ...mapGetters(['trademarkList','attrsList'])
+  },
+  methods:{
+    tradeMarkHandler(trademark){
+      this.$emit('trademarkInfo',trademark)
+    },
+    attrInfo(attr,attrValue){
+      this.$emit('attrInfo',attr,attrValue)
+    },
   },
 }
 </script>

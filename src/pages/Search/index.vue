@@ -11,36 +11,28 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeCategoryName">x</i></li>
-            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">x</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i
+                @click="removeCategoryName">x</i></li>
+            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">x</i>
+            <li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i @click="removeTradeMark">x</i>
+            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{ attrValue.split(':')[1] }}<i @click="removeAttr(index)">x</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"></SearchSelector>
 
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isOne}" @click="changeOrder('1')">
+                  <a>综合<span v-show="isOne" class="iconfont" :class="{'icon-long-arrow-up':isAsc,'icon-long-arrow-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isTwo}"  @click="changeOrder('2')">
+                  <a>价格<span v-show="isTwo" class="iconfont" :class="{'icon-long-arrow-up':isAsc,'icon-long-arrow-down':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -125,7 +117,7 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        order: "1:desc",
         pageNo: 1,
         pageSize: 3,
         props: [],
@@ -137,44 +129,87 @@ export default {
     SearchSelector
   },
   beforeMount() {
-    Object.assign(this.searchParams,this.$route.params,this.$route.query)
+    Object.assign(this.searchParams, this.$route.params, this.$route.query)
   },
   mounted() {
     this.getData()
   },
   computed: {
-    ...mapGetters(['goodsList', 'attrsList', 'trademarkList'])
+    ...mapGetters(['goodsList', 'attrsList', 'trademarkList']),
+    isOne(){
+      return this.searchParams.order.indexOf('1')!==-1
+    },
+    isTwo(){
+      return !this.isOne
+    },
+    isAsc(){
+      return this.searchParams.order.indexOf('asc')!=-1
+    },
+    isDesc(){
+      return !this.isAsc
+    },
   },
   methods: {
     getData() {
       this.$store.dispatch('getSearchList', this.searchParams)
     },
-    removeCategoryName(){
-      this.searchParams.categoryName=undefined
-      this.searchParams.category3Id=undefined
-      this.searchParams.category2Id=undefined
-      this.searchParams.category1Id=undefined
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined
+      this.searchParams.category3Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category1Id = undefined
       this.getData()
-      this.$router.push({name:'search',params:this.$route.params})
+      this.$router.push({name: 'search', params: this.$route.params})
     },
-    removeKeyword(){
-      this.searchParams.keyword=''
+    removeKeyword() {
+      this.searchParams.keyword = ''
       this.getData()
       this.$bus.$emit('clear')
       this.$router.push({
-        name:'search',
-        query:this.$route.query
+        name: 'search',
+        query: this.$route.query
       })
     },
-  },
-  watch:{
-      $route(){
-        Object.assign(this.searchParams,this.$route.params,this.$route.query)
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+      this.getData()
+    },
+    attrInfo(attr,attrValue) {
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
+      if(this.searchParams.props.indexOf(props)==-1){
+        this.searchParams.props.push(props)
         this.getData()
-        this.searchParams.category3Id=undefined
-        this.searchParams.category2Id=undefined
-        this.searchParams.category1Id=undefined
       }
+    },
+    removeTradeMark(){
+      this.searchParams.trademark=undefined
+      this.getData()
+    },
+    removeAttr(index){
+      this.searchParams.props.splice(index,1)
+      this.getData()
+    },
+    changeOrder(flag){
+      let originFlag = this.searchParams.order.split(':')[0]
+      let originSort = this.searchParams.order.split(':')[1]
+      let newOrder = ''
+      if(flag==originFlag){
+        newOrder = `${originFlag}:${originSort=='desc'?'asc':'desc'}`
+      }else{
+        newOrder = `${flag}:${'desc'}`
+      }
+      this.searchParams.order = newOrder
+      this.getData()
+    },
+  },
+  watch: {
+    $route() {
+      Object.assign(this.searchParams, this.$route.params, this.$route.query)
+      this.getData()
+      this.searchParams.category3Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category1Id = undefined
+    }
   },
 }
 </script>
