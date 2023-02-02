@@ -1,8 +1,9 @@
 import { reqGoodsInfo,reqAddOrUpdateShopCart } from "@/api"
+import {getUUID} from "@/utils/uuid_token"
 
 const state = {
-    // categoryList:[],
     goodInfo:{},
+    uuid_token:getUUID()
 }
 
 const mutations = {
@@ -23,7 +24,7 @@ const actions = {
         if(res.code==200){
             return "ok"
         }else{
-            return Promise.reject(new Error('fail'))
+            return Promise.reject(new Error('faile'))
         }
     },
 }
