@@ -1,4 +1,4 @@
-import {reqCartList,reqDeleteCartById} from "@/api";
+import {reqCartList,reqDeleteCartById,reqUpdateCheckedById} from "@/api";
 
 const state = {
     cartList:[]
@@ -19,6 +19,14 @@ const actions = {
     },
     async deleteCartListBySkuId({commit},skuId){
         let res = await reqDeleteCartById(skuId)
+        if(res.code==200){
+            return 'ok'
+        }else{
+            return Promise.reject(new Error('faile'))
+        }
+    },
+    async updateCheckedById({commit}, {skuId,isChecked}){
+        let res = await reqUpdateCheckedById(skuId,isChecked)
         if(res.code==200){
             return 'ok'
         }else{
