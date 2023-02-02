@@ -1,4 +1,4 @@
-import { reqGoodsInfo } from "@/api"
+import { reqGoodsInfo,reqAddOrUpdateShopCart } from "@/api"
 
 const state = {
     // categoryList:[],
@@ -18,6 +18,14 @@ const actions = {
             commit("GETGOODINFO",res.data)
         }
     },
+    async addOrUpdateShopCart({commit}, {skuId,skuNum}){
+        let res = await reqAddOrUpdateShopCart(skuId,skuNum)
+        if(res.code==200){
+            return "ok"
+        }else{
+            return Promise.reject(new Error('fail'))
+        }
+    },
 }
 
 const getters = {
@@ -27,8 +35,8 @@ const getters = {
     skuInfo(state){
         return state.goodInfo.skuInfo||{}
     },
-    spuSaleAttrList(state){
-        return state.goodInfo.spuSaleAttrList||{}
+    spuSaleAttrList(state) {
+        return state.goodInfo.spuSaleAttrList || []
     },
 }
 
