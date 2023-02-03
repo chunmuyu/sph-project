@@ -6,7 +6,7 @@
     <Rank></Rank>
     <Like></Like>
     <Floor v-for="floor in floorList" :key="floor.id" :list="floor"></Floor>
-    <Brand></Brand>   
+    <Brand></Brand>
   </div>
 </template>
 
@@ -21,8 +21,8 @@ import {mapState} from "vuex";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name:"Home",
-  components:{
+  name: "Home",
+  components: {
     ListContainer,
     Recommend,
     Rank,
@@ -32,11 +32,14 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getFloorList')
+
+    this.$store.dispatch('getUserInfo')
+
   },
-  computed:{
-      ...mapState({
-        floorList:state => state.home.floorList
-      })
+  computed: {
+    ...mapState({
+      floorList: state => state.home.floorList
+    }),
   }
 }
 </script>
