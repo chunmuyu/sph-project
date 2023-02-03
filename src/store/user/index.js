@@ -1,5 +1,5 @@
-import {reqGetCode,reqUserRegister,reqUserLogin,reqUserInfo} from "@/api";
-import {getToken, setToken} from "@/utils/token";
+import {reqGetCode,reqUserRegister,reqUserLogin,reqUserInfo,reqLogout} from "@/api";
+import {getToken, setToken,removeToken} from "@/utils/token";
 
 const state = {
     code:'',
@@ -16,6 +16,11 @@ const mutations = {
     },
     GETUSERINFO(state,userInfo){
         state.userInfo = userInfo
+    },
+    CLEAR(state){
+        state.token = ''
+        state.userInfo = {}
+        removeToken()
     }
 }
 
@@ -54,6 +59,20 @@ const actions = {
         let res = await reqUserInfo()
         if(res.code==200) {
             commit('GETUSERINFO', res.data)
+            return 'ok'
+        }else{
+            return Promise.reject(new Error('faile'))
+        }
+    },
+
+    async userLogout({commit}){
+        let res = await reqLogout()
+        console.log(res)
+        if(res.code==200) {
+            commit("CLEAR")
+            return 'ok'
+        }else {
+            return Promise.reject(new Error('fail'))
         }
     },
 }

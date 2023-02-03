@@ -12,7 +12,7 @@
           </p>
           <p v-else>
             <a>{{userName}}</a>
-            <a class="register">退出</a>
+            <a class="register" @click="userLogout">退出</a>
           </p>
         </div>
         <div class="typeList">
@@ -68,6 +68,14 @@ export default {
         this.$router.push(location)
       }
     },
+    async userLogout(){
+      try{
+        await this.$store.dispatch('userLogout')
+        this.$router.push('/home')
+      } catch(error){
+          alert(error)
+      }
+    }
   },
   mounted() {
     this.$bus.$on('clear',()=>{
