@@ -17,7 +17,7 @@
         </div>
         <div class="typeList">
           <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
+          <a @click="shopCart">我的购物车</a>
           <a href="###">我的尚品汇</a>
           <a href="###">尚品汇会员</a>
           <a href="###">企业采购</a>
@@ -75,6 +75,9 @@ export default {
       } catch(error){
           alert(error)
       }
+    },
+    shopCart(){
+      this.$router.push('/shopcart')
     }
   },
   mounted() {
