@@ -32,17 +32,38 @@ export default [
     {
         path:"/paysuccess",
         component:PaySuccess,
-        meta:{show:true}
+        meta:{show:true},
+        beforeEnter:(to,from,next)=>{
+            if(from.path=='/pay'){
+                next()
+            }else{
+                next(false)
+            }
+        }
     },
     {
         path:"/pay",
         component:Pay,
-        meta:{show:true}
+        meta:{show:true},
+        beforeEnter:(to,from,next)=>{
+            if(from.path=='/trade'){
+                next()
+            }else{
+                next(false)
+            }
+        }
     },
     {
         path:"/trade",
         component:Trade,
-        meta:{show:true}
+        meta:{show:true},
+        beforeEnter:(to,from,next)=>{
+            if(from.path=='/shopcart'){
+                next()
+            }else{
+                next(false)
+            }
+        }
     },
     {
         path:"/shopcart",
